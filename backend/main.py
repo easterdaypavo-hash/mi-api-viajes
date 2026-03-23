@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+# Configuración CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -17,6 +18,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ✅ ENDPOINT RAÍZ PARA PROBAR RENDER
+@app.get("/")
+def root():
+    return {"message": "¡FastAPI funciona en Render!"}
+
+
+# MODELOS
 class SolicitudViaje(BaseModel):
     presupuesto: int
     tipo_viaje: str
@@ -30,6 +38,7 @@ class Usuario(BaseModel):
     password: str
 
 
+# ENDPOINTS EXISTENTES
 @app.post("/recomendar")
 def recomendar(solicitud: SolicitudViaje):
     resultados = recomendar_destinos(
