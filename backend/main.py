@@ -5,6 +5,7 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from backend.recomendador import recomendar_destinos
 from backend.usuarios import registrar_usuario
+import os
 
 # Inicializa FastAPI con documentación accesible
 app = FastAPI(docs_url="/docs", redoc_url="/redoc")
@@ -21,10 +22,11 @@ app.add_middleware(
 # Monta la carpeta frontend para archivos estáticos
 app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
-# ENDPOINT RAÍZ → sirve index.html
+# ENDPOINT RAÍZ → sirve index.html (ajustado para Render)
 @app.get("/")
 def root():
-    return FileResponse("frontend/index.html")
+    file_path = os.path.join("frontend", "index.html")
+    return FileResponse(file_path)
 
 # MODELOS
 class SolicitudViaje(BaseModel):
