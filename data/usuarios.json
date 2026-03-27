@@ -1,0 +1,22 @@
+[
+    {
+        "nombre": "Juan",
+        "email": "sasha@gmail.com",
+        "password": "123456"
+    },
+    {
+        "nombre": "juan@gmail.com",
+        "email": "easterdaypavo@gmail.com",
+        "password": "123456"
+    },
+    {
+        "nombre": "jose@icadepro.es",
+        "email": "",
+        "password": "123456"
+    },
+    {
+        "nombre": "Juan P\u00e9rez",
+        "email": "juanperez@hotmail.con",
+        "password": "123456"
+    }
+]
