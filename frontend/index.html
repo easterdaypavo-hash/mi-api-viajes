@@ -19,6 +19,30 @@ header { background:#003580; color:white; padding:20px; font-size:22px; }
 input, select, button { padding:8px; border-radius:5px; border:1px solid #ccc; }
 button { background:#003580; color:white; cursor:pointer; }
 button:hover { background:#002050; }
+
+.coincidencia {
+  display: inline-block;
+  margin: 10px 0;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.coincidencia.alta {
+  background: #d4edda;
+  color: #155724;
+}
+
+.coincidencia.media {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.coincidencia.baja {
+  background: #f8d7da;
+  color: #721c24;
+}
 </style>
 </head>
 
@@ -61,7 +85,7 @@ button:hover { background:#002050; }
 let map = L.map('map').setView([20,0],2);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'&copy; OpenStreetMap' }).addTo(map);
 
-// 🔥 REGISTRO USUARIO
+// REGISTRO USUARIO
 async function registrar(){
   try {
     const nombre = document.getElementById("nombre").value;
@@ -84,7 +108,7 @@ async function registrar(){
   }
 }
 
-// 🔎 RECOMENDADOR
+// RECOMENDADOR
 async function recomendar(){
   try {
     const presupuesto = parseInt(document.getElementById("presupuesto").value);
@@ -116,11 +140,14 @@ async function recomendar(){
     }
 
     data.recomendaciones.forEach(destino=>{
-      document.getElementById("results").innerHTML+=`
+      document.getElementById("results").innerHTML += `
         <div class="card">
           <img src="${destino.imagen}">
           <div class="card-content">
             <h3>${destino.ciudad}, ${destino.pais}</h3>
+            <div class="coincidencia ${destino.nivel_coincidencia.toLowerCase()}">
+              Coincidencia: ${destino.coincidencia}% · ${destino.nivel_coincidencia}
+            </div>
             <p>${destino.descripcion}</p>
             <p>🌍 ${destino.continente}</p>
             <p>✈ Aeropuerto: ${destino.aeropuerto}</p>
