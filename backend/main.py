@@ -28,7 +28,10 @@ def root():
     file_path = os.path.join("frontend", "index.html")
     return FileResponse(file_path)
 
+# =====================
 # MODELOS
+# =====================
+
 class SolicitudViaje(BaseModel):
     presupuesto: int
     tipo_viaje: str
@@ -40,7 +43,13 @@ class Usuario(BaseModel):
     email: str
     password: str
 
+class ChatRequest(BaseModel):
+    mensaje: str
+
+# =====================
 # ENDPOINTS
+# =====================
+
 @app.post("/recomendar")
 def recomendar(solicitud: SolicitudViaje):
     resultados = recomendar_destinos(
@@ -59,3 +68,81 @@ def registro(usuario: Usuario):
         usuario.password
     )
     return resultado
+
+# =====================
+# CHAT INTELIGENTE
+# =====================
+
+@app.post("/chat")
+def chat(req: ChatRequest):
+    texto = req.mensaje.lower()
+
+    # Valores por defecto
+    presupuesto = 150
+    tipo_viaje = "cultura"
+    mes = "verano"
+    continente = None
+
+    # Detectar tipo de viaje
+    if "playa" in texto:
+        tipo_viaje = "playa"
+    elif "aventura" in texto:
+        tipo_viaje = "aventura"
+    elif "fiesta" in texto:
+        tipo_viaje = "fiesta"
+    elif "relax" in texto:
+        tipo_viaje = "relax"
+    elif "naturaleza" in texto:
+        tipo_viaje = "naturaleza"
+
+    # Detectar presupuesto
+    if "barato" in texto or "económico" in texto:
+        presupuesto = 100
+    elif "medio" in texto:
+        presupuesto = 200
+    elif "lujo" in texto:
+        presupuesto = 500
+
+    # Detectar mes
+    if "enero" in texto:
+        mes = "enero"
+    elif "febrero" in texto:
+        mes = "febrero"
+    elif "marzo" in texto:
+        mes = "marzo"
+    elif "abril" in texto:
+        mes = "abril"
+    elif "mayo" in texto:
+        mes = "mayo"
+    elif "junio" in texto:
+        mes = "junio"
+    elif "julio" in texto:
+        mes = "julio"
+    elif "agosto" in texto:
+        mes = "agosto"
+    elif "septiembre" in texto:
+        mes = "septiembre"
+    elif "octubre" in texto:
+        mes = "octubre"
+    elif "noviembre" in texto:
+        mes = "noviembre"
+    elif "diciembre" in texto:
+        mes = "diciembre"
+
+    # Llamar al recomendador real
+    destinos = recomendar_destinos(
+        presupuesto,
+        tipo_viaje,
+        mes,
+        continente
+    )
+
+    # Construir respuesta
+    if destinos:
+        respuesta = "Te recomiendo estos destinos:\n"
+        for d in destinos:
+            respuesta += f"- {d['ciudad']} ({d['pais']})\n"
+    else:
+        respuesta = "No encontré destinos con esos criterios."
+
+    return {"respuesta": respuesta}
